@@ -1,0 +1,6 @@
+#store info here
+
+env
+__pycache__
+secrets.sh
+.gitignore
