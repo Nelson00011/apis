@@ -55,22 +55,23 @@ def find_afterparties():
     res = requests.get(url, params=payload)
     # - Make sure to save the JSON data from the response to the `data`
     #   variable so that it can display on the page. This is useful for
-    #   debugging purposes!
+    #   debugging purposes9!
     event_info = res.json()
-    #paused here
-    print("Test print")
-    print(event_info)
+    # data = event_info
+    
     # - Replace the empty list in `events` with the list of events from your
     #   search results
-    
+    events = event_info['_embedded']['events']
+  
+    # data = {'Test': ['This is just some test data'],
+    #         'page': {'totalElements': 1}} res
+    # events = []
+   
 
-    data = {'Test': ['This is just some test data'],
-            'page': {'totalElements': 1}}
-    events = []
 
     return render_template('search-results.html',
                            pformat=pformat,
-                           data=data,
+                           data=event_info,
                            results=events)
 
 
@@ -84,8 +85,16 @@ def get_event_details(id):
     """View the details of an event."""
 
     # TODO: Finish implementing this view function
-
-    return render_template('event-details.html')
+    url = 'https://app.ticketmaster.com/discovery/v2/events'
+    payload = {'apikey': API_KEY,
+                'id': id}
+    res = requests.get(url, params=payload)
+    event_info = res.json()
+    event_name = event_info['_embedded']['events'][0]['name']
+    print("test print: ")
+    print(event_info)
+    print(event_name)
+    return render_template('event-details.html', event_name = event_name, id = id )
 
 
 if __name__ == '__main__':
